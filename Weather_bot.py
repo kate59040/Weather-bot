@@ -25,33 +25,19 @@ def get_weather(message):
         temp_max = data["main"]["temp_max"]
         humidity = data["main"]["humidity"]
         weather = data["weather"][0]["main"]
-        if weather == 'Clouds':
-            weather = 'Облачно ☁️'
-            image = 'Clouds.jpg'
-        elif weather == 'Snow':
-            weather = 'Снег ❄️'
-            image = 'Snow.jpg'
-        elif weather == 'Clear':
-            weather = 'Ясно 🌤'
-            image = 'Clear.jpg'
-        elif weather == 'Rain':
-            weather = 'Дождь 🌧'
-            image = 'Rain.jpg'
-        elif weather == 'Sunny':
-            weather = 'Солнечно ☀️'
-            image = 'Sunny.jpg'
-        else:
-            weather = None
-            image = None
+        weather_img_dict = {'Clouds': ['Облачно ☁️', 'Clouds.jpg'], 'Snow': ['Снег ❄️', 'Snow.jpg'],
+                            'Clear': ['Ясно 🌤', 'Clear.jpg'], 'Rain': ['Дождь 🌧', 'Rain.jpg'],
+                            'Sunny': ['Солнечно ☀️', 'Sunny.jpg']}
+
         bot.reply_to(message, f'~Погода в городе {city.capitalize()}~\n\n'
-                              f'{weather}\n'
+                              f'{weather_img_dict[weather][0]}\n'
                               f'Текущая температура воздуха: {temp} °C\n'
                               f'Ощущается как: {temp_feel} °C\n'
                               f'Минимальная температура на данный момент: {temp_min}°C\n'
                               f'Максимальная температура на данный момент: {temp_max} °C\n'
                               f'Влажность воздуха: {humidity}%')
 
-        file = open(f'img/{image}', 'rb')
+        file = open(f'img/{(weather_img_dict[weather][1])}', 'rb')
         bot.send_photo(message.chat.id, file)
         bot.send_message(message.chat.id, "Хорошего настроения! ;)")
 
